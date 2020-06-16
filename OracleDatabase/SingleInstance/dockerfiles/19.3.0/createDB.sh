@@ -90,4 +90,4 @@ sqlplus / as sysdba << EOF
 EOF
 
 # Remove temporary response file
-rm $ORACLE_BASE/dbca.rsp
+# rm $ORACLE_BASE/dbca.rsp

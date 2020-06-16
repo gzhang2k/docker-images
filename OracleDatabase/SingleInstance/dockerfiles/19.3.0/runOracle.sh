@@ -157,7 +157,7 @@ export ORACLE_PDB=${ORACLE_PDB:-ORCLPDB1}
 export ORACLE_CHARACTERSET=${ORACLE_CHARACTERSET:-AL32UTF8}
 
 # Check whether database already exists
-if [ -d $ORACLE_BASE/oradata/$ORACLE_SID ]; then
+if [ -d $ORACLE_BASE/oradata/${ORACLE_SID^^} ]; then
    symLinkFiles;
    
    # Make sure audit file destination exists
