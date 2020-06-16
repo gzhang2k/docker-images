@@ -39,7 +39,13 @@ sed -i -e "s|###ORACLE_CHARACTERSET###|$ORACLE_CHARACTERSET|g" $ORACLE_BASE/dbca
 # This is due to Github Issue #307
 if [ `nproc` -gt 8 ]; then
    sed -i -e "s|totalMemory=2048||g" $ORACLE_BASE/dbca.rsp
+else
+   sed -i -e "s|totalMemory=2048|totalMemory=3072|g" $ORACLE_BASE/dbca.rsp
 fi;
+
+# Turn off optional components in General_Purpose.dbc
+sed -i -e "s|value=\"true\"|value=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc
+sed -i -e "s|includeInPDBs=\"true\"|includeInPDBs=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc
 
 # Create network related config files (sqlnet.ora, tnsnames.ora, listener.ora)
 mkdir -p $ORACLE_HOME/network/admin

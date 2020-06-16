@@ -53,6 +53,7 @@ cd $ORACLE_HOME       && \
 mv $INSTALL_DIR/$INSTALL_FILE_1 $ORACLE_HOME/ && \
 unzip $INSTALL_FILE_1 && \
 rm $INSTALL_FILE_1    && \
+echo "set sqlprompt \"_user'@'_connect_identifier SQL> \"" >> $ORACLE_HOME/sqlplus/admin/glogin.sql && \
 $ORACLE_HOME/runInstaller -silent -force -waitforcompletion -responsefile $INSTALL_DIR/$INSTALL_RSP -ignorePrereqFailure && \
 cd $HOME
 

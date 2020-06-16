@@ -129,7 +129,7 @@ if [ "$ORACLE_SID" == "" ]; then
 else
   # Make ORACLE_SID upper case
   # Github issue # 984
-  export ORACLE_SID=${ORACLE_SID^^}
+  # export ORACLE_SID=${ORACLE_SID^^}
 
   # Check whether SID is no longer than 12 bytes
   # Github issue #246: Cannot start OracleDB image
@@ -151,7 +151,7 @@ export ORACLE_PDB=${ORACLE_PDB:-ORCLPDB1}
 
 # Make ORACLE_PDB upper case
 # Github issue # 984
-export ORACLE_PDB=${ORACLE_PDB^^}
+# export ORACLE_PDB=${ORACLE_PDB^^}
 
 # Default for ORACLE CHARACTERSET
 export ORACLE_CHARACTERSET=${ORACLE_CHARACTERSET:-AL32UTF8}
