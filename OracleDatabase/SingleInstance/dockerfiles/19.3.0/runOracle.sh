@@ -52,6 +52,10 @@ function symLinkFiles {
       ln -s $ORACLE_BASE/oradata/dbconfig/$ORACLE_SID/tnsnames.ora $ORACLE_HOME/network/admin/tnsnames.ora
    fi;
 
+   if [ ! -L $ORACLE_BASE/oradata/$ORACLE_SID ]; then
+      ln -s $ORACLE_BASE/oradata/${ORACLE_SID^^} $ORACLE_BASE/oradata/$ORACLE_SID
+   fi;
+
    # oracle user does not have permissions in /etc, hence cp and not ln 
    cp $ORACLE_BASE/oradata/dbconfig/$ORACLE_SID/oratab /etc/oratab
 
@@ -164,11 +168,12 @@ if [ -d $ORACLE_BASE/oradata/${ORACLE_SID^^} ]; then
    if [ ! -d $ORACLE_BASE/admin/$ORACLE_SID/adump ]; then
       mkdir -p $ORACLE_BASE/admin/$ORACLE_SID/adump
    fi;
-   
+   echo "Starting database $ORACLE_SID . . ."
    # Start database
    $ORACLE_BASE/$START_FILE;
    
 else
+  echo "Creating database $ORACLE_SID . . ."
   # Remove database config files, if they exist
   rm -f $ORACLE_HOME/dbs/spfile$ORACLE_SID.ora
   rm -f $ORACLE_HOME/dbs/orapw$ORACLE_SID
@@ -185,6 +190,8 @@ else
   # Execute custom provided setup scripts
   $ORACLE_BASE/$USER_SCRIPTS_FILE $ORACLE_BASE/scripts/setup
 fi;
+
+whoami && id
 
 # Check whether database is up and running
 $ORACLE_BASE/$CHECK_DB_FILE

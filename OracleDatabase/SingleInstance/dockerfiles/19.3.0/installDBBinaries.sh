@@ -49,10 +49,13 @@ sed -i -e "s|###ORACLE_BASE###|$ORACLE_BASE|g" $INSTALL_DIR/$INSTALL_RSP && \
 sed -i -e "s|###ORACLE_HOME###|$ORACLE_HOME|g" $INSTALL_DIR/$INSTALL_RSP
 
 # Install Oracle binaries
+# Turn off optional components in General_Purpose.dbc
 cd $ORACLE_HOME       && \
 mv $INSTALL_DIR/$INSTALL_FILE_1 $ORACLE_HOME/ && \
 unzip $INSTALL_FILE_1 && \
 rm $INSTALL_FILE_1    && \
+sed -i -e "s|value=\"true\"|value=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc && \
+sed -i -e "s|includeInPDBs=\"true\"|includeInPDBs=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc && \
 echo "set sqlprompt \"_user'@'_connect_identifier SQL> \"" >> $ORACLE_HOME/sqlplus/admin/glogin.sql && \
 $ORACLE_HOME/runInstaller -silent -force -waitforcompletion -responsefile $INSTALL_DIR/$INSTALL_RSP -ignorePrereqFailure && \
 cd $HOME

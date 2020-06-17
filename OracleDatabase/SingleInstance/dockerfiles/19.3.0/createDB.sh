@@ -43,10 +43,6 @@ else
    sed -i -e "s|totalMemory=2048|totalMemory=3072|g" $ORACLE_BASE/dbca.rsp
 fi;
 
-# Turn off optional components in General_Purpose.dbc
-sed -i -e "s|value=\"true\"|value=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc
-sed -i -e "s|includeInPDBs=\"true\"|includeInPDBs=\"false\"|g" $ORACLE_HOME/assistants/dbca/templates/General_Purpose.dbc
-
 # Create network related config files (sqlnet.ora, tnsnames.ora, listener.ora)
 mkdir -p $ORACLE_HOME/network/admin
 echo "NAME.DIRECTORY_PATH= (TNSNAMES, EZCONNECT, HOSTNAME)" > $ORACLE_HOME/network/admin/sqlnet.ora
@@ -65,10 +61,12 @@ DIAG_ADR_ENABLED = off
 " > $ORACLE_HOME/network/admin/listener.ora
 
 # Start LISTENER and run DBCA
-lsnrctl start &&
+lsnrctl start && 
 dbca -silent -createDatabase -responseFile $ORACLE_BASE/dbca.rsp ||
  cat /opt/oracle/cfgtoollogs/dbca/$ORACLE_SID/$ORACLE_SID.log ||
  cat /opt/oracle/cfgtoollogs/dbca/$ORACLE_SID.log
+
+# dbca -silent -generateScripts -templateName General_Purpose.dbc -gdbName $ORACLE_SID -responseFile $ORACLE_BASE/dbca.rsp -scriptDest $ORACLE_BASE/oradata/dbca-$ORACLE_SID-sql
 
 echo "$ORACLE_SID=localhost:1521/$ORACLE_SID" > $ORACLE_HOME/network/admin/tnsnames.ora
 echo "$ORACLE_PDB= 
@@ -90,4 +88,4 @@ sqlplus / as sysdba << EOF
 EOF
 
 # Remove temporary response file
-# rm $ORACLE_BASE/dbca.rsp
+rm $ORACLE_BASE/dbca.rsp

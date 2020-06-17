@@ -18,8 +18,6 @@ if [ "$ORACLE_HOME" == "" ]; then
   exit 1;
 fi;
 
-whoami && id
-
 # Start Listener
 lsnrctl start
 
